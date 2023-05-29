@@ -2,6 +2,7 @@ package com.muzic.parser;
 
 import com.muzic.entity.*;
 import com.muzic.model.*;
+import com.muzic.service.EntityService;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -12,6 +13,14 @@ import java.util.stream.IntStream;
 
 public class RekordboxXMLHandler extends DefaultHandler {
 
+    private final EntityService entityService;
+
+    public RekordboxXMLHandler(boolean persist, EntityService entityService) {
+        this.persist = persist;
+        this.entityService = entityService;
+    }
+
+    private final boolean persist;
     private RekordboxXML rekordboxXML;
 
     // XML Nodes
@@ -71,21 +80,7 @@ public class RekordboxXMLHandler extends DefaultHandler {
                     }
                 } else {
                     Map<String, String> attributesMap = attributesToMap(attributes);
-                    Track track = Track.builder()
-                            .name(attributesMap.get(NAME))
-                            .rekordboxId(Long.valueOf(attributesMap.get(TRACK_ID)))
-                            .artists(parseArtistField(attributesMap.get(ARTIST)))
-                            .album(new Album(attributesMap.get(ALBUM)))
-                            .size(Long.valueOf(attributesMap.get(SIZE)))
-                            .duration(Long.valueOf(attributesMap.get(TOTAL_TIME)))
-                            .genre(new Genre(attributesMap.get(GENRE)))
-                            .format(AudioFormat.valueOf(attributesMap.get(KIND).split(" ")[1]))
-                            .year(Integer.valueOf(attributesMap.get(YEAR)))
-                            .bpm(Double.valueOf(attributesMap.get(AVERAGE_BPM)))
-                            .bitRate(Long.valueOf(attributesMap.get(BIT_RATE)))
-                            .sampleRate(Long.valueOf(attributesMap.get(SAMPLE_RATE)))
-                            .tonality(attributesMap.get(TONALITY))
-                            .build();
+                    Track track = persistTrack(attributesMap, persist);
                     this.rekordboxXML.getCollection().put(track.getRekordboxId(), track);
                 }
                 break;
@@ -141,10 +136,30 @@ public class RekordboxXMLHandler extends DefaultHandler {
         return map;
     }
 
-    private static Set<Artist> parseArtistField(String artistField) {
-        String[] array = artistField.split(" & ");
-        Set<Artist> set = Arrays.stream(array).map(s -> Artist.builder().name(s).build()).collect(Collectors.toSet());
-        return set;
+    private Artist[] parseArtistField(String artistField) {
+        return Arrays.stream(artistField.split(" & ")).map(s -> Artist.builder().name(s).build()).toArray(Artist[]::new);
+    }
+
+    private Track persistTrack(Map<String, String> attributesMap, boolean persist) {
+        Genre genre = persist ? this.entityService.getOrCreate(attributesMap.get(GENRE)) : new Genre(attributesMap.get(GENRE));
+        Set<Artist> artists = persist ? this.entityService.getOrCreate(parseArtistField(attributesMap.get(ARTIST))) : Arrays.stream(parseArtistField(attributesMap.get(ARTIST))).collect(Collectors.toSet());
+        Album album = persist ? this.entityService.getOrCreate(attributesMap.get(ALBUM), artists) : new Album(attributesMap.get(ALBUM));
+        Track track = Track.builder()
+                .name(attributesMap.get(NAME))
+                .rekordboxId(Long.valueOf(attributesMap.get(TRACK_ID)))
+                .artists(artists)
+                .album(album)
+                .size(Long.valueOf(attributesMap.get(SIZE)))
+                .duration(Long.valueOf(attributesMap.get(TOTAL_TIME)))
+                .genre(genre)
+                .format(AudioFormat.valueOf(attributesMap.get(KIND).split(" ")[1]))
+                .year(Integer.valueOf(attributesMap.get(YEAR)))
+                .bpm(Double.valueOf(attributesMap.get(AVERAGE_BPM)))
+                .bitRate(Long.valueOf(attributesMap.get(BIT_RATE)))
+                .sampleRate(Long.valueOf(attributesMap.get(SAMPLE_RATE)))
+                .tonality(attributesMap.get(TONALITY))
+                .build();
+        return persist ? entityService.saveTrack(track) : track;
     }
 
     public RekordboxXML getRekordboxXML() {

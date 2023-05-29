@@ -6,5 +6,5 @@ import java.io.File;
 
 public interface Parser {
 
-    RekordboxXML parseXmlFile(File file);
+    RekordboxXML parseXmlFile(File file, boolean persist);
 }

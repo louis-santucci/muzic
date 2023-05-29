@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ParserTest {
@@ -25,7 +25,7 @@ public class ParserTest {
     @Test
     void test1() {
         File file = new File("E:\\Documents\\Projects\\muzic\\src\\test\\resources\\test_xml\\test.xml");
-        RekordboxXML xml = this.parser.parseXmlFile(file);
+        RekordboxXML xml = this.parser.parseXmlFile(file, false);
         Track track = Track.builder()
                 .rekordboxId(10875444L)
                 .name("Killa (Original Mix)")
@@ -64,7 +64,7 @@ public class ParserTest {
     @Test
     public void test2_playlist() {
         File file = new File("E:\\Documents\\Projects\\muzic\\src\\test\\resources\\test_xml\\test.xml");
-        RekordboxXML xml = this.parser.parseXmlFile(file);
+        RekordboxXML xml = this.parser.parseXmlFile(file, false);
         PlaylistTree tree = xml.getPlaylistTree();
         FolderTreeNode rootNode = tree.getNode();
 
@@ -104,13 +104,16 @@ public class ParserTest {
     @Test
     public void test3_playlist() {
         File file = new File("E:\\Documents\\Projects\\muzic\\src\\test\\resources\\test_xml\\test.xml");
-        RekordboxXML xml = this.parser.parseXmlFile(file);
+        RekordboxXML xml = this.parser.parseXmlFile(file, false);
         PlaylistTree tree = xml.getPlaylistTree();
+
+        List<Playlist> result = tree.getNode().getAllPlaylists();
+
         Track track = Track.builder()
                 .rekordboxId(10875444L)
                 .name("Killa (Original Mix)")
                 .artists(Collections.singleton(new Artist("Chané")))
-                .album(new Album("Special Dancefloor Forces III"))
+                .album(Album.builder().name("Special Dancefloor Forces III").build())
                 .genre(new Genre("Techno"))
                 .format(AudioFormat.AIFF)
                 .year(2021)
@@ -156,16 +159,13 @@ public class ParserTest {
                 .trackList(tracks)
                 .path("ROOT/Folder2/Louis")
                 .build();
-
         List<Playlist> playlists = new ArrayList<>();
         playlists.add(playlist1);
         playlists.add(playlist2);
         playlists.add(playlist3);
 
-        List<Playlist> result = tree.getNode().getAllPlaylists();
+        assertEquals(playlists.size(), result.size());
 
-        playlists.forEach(playlist -> {
-            assertTrue(result.contains(playlist));
-        });
+        IntStream.range(0, playlists.size()).forEachOrdered(i -> assertEquals(playlists.get(i), result.get(i)));
     }
 }
