@@ -1,9 +1,6 @@
 package com.muzic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +20,9 @@ public class Artist extends SuperEntity {
     @ManyToMany
     @Column(name = "tracks")
     private Set<Track> tracks;
+    @ManyToMany
+    @Column(name = "albums")
+    private Set<Album> albums;
 
     public Artist(String name) {
         this.name = name;

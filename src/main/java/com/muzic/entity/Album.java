@@ -1,10 +1,8 @@
 package com.muzic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,12 +13,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class Album extends SuperEntity {
     @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "album")
     private Set<Track> tracks;
+
+    @ManyToMany
+    private Set<Artist> artists;
 
     public Album(String name) {
         this.name = name;
