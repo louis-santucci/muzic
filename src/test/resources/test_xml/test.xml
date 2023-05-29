@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DJ_PLAYLISTS Version="1.0.0">
+  <PRODUCT Name="rekordbox" Version="6.6.7" Company="AlphaTheta"/>
+  <COLLECTION Entries="2414">
+    <TRACK TrackID="10875444" Name="Killa (Original Mix)" Artist="Chané"
+           Composer="" Album="Special Dancefloor Forces III" Grouping=""
+           Genre="Techno" Kind="Fichier AIFF" Size="74818426" TotalTime="423"
+           DiscNumber="0" TrackNumber="4" Year="2021" AverageBpm="145.00"
+           DateAdded="2021-12-03" BitRate="1411" SampleRate="44100" Comments="Visit https://dancefloorimpactresearch.bandcamp.com"
+           PlayCount="0" Rating="0" Location="file://localhost/E:/Music/last%20mp3/Various%20Artists%20-%20Chan%c3%a9%20-%20Killa%20(Original%20Mix).aiff"
+           Remixer="" Tonality="4A" Label="" Mix="">
+    </TRACK>
+    <TRACK TrackID="68536184" Name="Die Prophezeiung (Hadone Version)" Artist="SHDW &amp; Obscure Shape"
+           Composer="" Album="Versionen 008" Grouping="" Genre="Techno"
+           Kind="Fichier AIFF" Size="68394964" TotalTime="383" DiscNumber="0"
+           TrackNumber="1" Year="2021" AverageBpm="144.00" DateAdded="2021-12-03"
+           BitRate="1411" SampleRate="44100" Comments="" PlayCount="0" Rating="0"
+           Location="file://localhost/E:/Music/last%20mp3/VERSIONEN008%20SHDW%20OBSCURE%20SHAPE/14974493_Die_Prophezeiung_(Hadone_Version).aiff"
+           Remixer="" Tonality="5A" Label="From Another Mind" Mix="">
+      <TEMPO Inizio="0.000" Bpm="144.00" Metro="4/4" Battito="1"/>
+    </TRACK>
+  </COLLECTION>
+  <PLAYLISTS>
+    <NODE Type="0" Name="ROOT" Count="4">
+        <NODE Name="Louis" Type="1" KeyType="0" Entries="2">
+          <TRACK Key="10875444"/>
+          <TRACK Key="68536184"/>
+        </NODE>
+        <NODE Name="Louis" Type="1" KeyType="0" Entries="2">
+          <TRACK Key="10875444"/>
+          <TRACK Key="68536184"/>
+        </NODE>
+        <NODE Name="Folder1" Count="0" Type="0">
+        </NODE>
+        <NODE Name="Folder2" Count="0" Type="0">
+            <NODE Name="Louis" Type="1" KeyType="0" Entries="2">
+                <TRACK Key="10875444"/>
+                <TRACK Key="68536184"/>
+            </NODE>
+        </NODE>
+    </NODE>
+  </PLAYLISTS>
+</DJ_PLAYLISTS>
