@@ -1,7 +1,8 @@
-package com.muzic.parser;
+package com.muzic.unit.parser;
 
 import com.muzic.entity.*;
 import com.muzic.model.*;
+import com.muzic.parser.XmlParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
