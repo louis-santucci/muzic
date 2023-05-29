@@ -40,7 +40,7 @@ public class Track extends SuperEntity {
     @Column(name = "format")
     @Enumerated(EnumType.STRING)
     private AudioFormat format;
-    @Column(name = "year")
+    @Column(name = "`year`")
     private Integer year;
     @Column(name = "bpm")
     private Double bpm;
